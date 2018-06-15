@@ -11,7 +11,7 @@ Summary  : Brushes used by MyPaint and other software using libmypaint.
 Group    : Development/Tools
 License  : CC0-1.0
 Requires: mypaint-brushes-data
-BuildRequires : python-dev
+
 BuildRequires : scons
 
 %description
