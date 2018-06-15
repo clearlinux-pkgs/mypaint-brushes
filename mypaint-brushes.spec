@@ -4,7 +4,7 @@
 #
 Name     : mypaint-brushes
 Version  : 1.3.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/Jehan/mypaint-brushes/archive/v1.3.0.tar.gz
 Source0  : https://github.com/Jehan/mypaint-brushes/archive/v1.3.0.tar.gz
 Summary  : Brushes used by MyPaint and other software using libmypaint.
