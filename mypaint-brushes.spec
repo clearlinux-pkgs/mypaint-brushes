@@ -4,15 +4,15 @@
 #
 Name     : mypaint-brushes
 Version  : 1.3.0
-Release  : 4
+Release  : 5
 URL      : https://github.com/Jehan/mypaint-brushes/archive/v1.3.0.tar.gz
 Source0  : https://github.com/Jehan/mypaint-brushes/archive/v1.3.0.tar.gz
 Summary  : Brushes used by MyPaint and other software using libmypaint.
 Group    : Development/Tools
-License  : CC0-1.0
-Requires: mypaint-brushes-data
-
-BuildRequires : scons
+License  : CC0-1.0 GPL-2.0
+Requires: mypaint-brushes-data = %{version}-%{release}
+Requires: mypaint-brushes-license = %{version}-%{release}
+BuildRequires : buildreq-scons
 
 %description
 mypaint-brushes - MyPaint brushes
@@ -30,35 +30,57 @@ data components for the mypaint-brushes package.
 %package dev
 Summary: dev components for the mypaint-brushes package.
 Group: Development
-Requires: mypaint-brushes-data
-Provides: mypaint-brushes-devel
+Requires: mypaint-brushes-data = %{version}-%{release}
+Provides: mypaint-brushes-devel = %{version}-%{release}
+Requires: mypaint-brushes = %{version}-%{release}
 
 %description dev
 dev components for the mypaint-brushes package.
 
 
+%package license
+Summary: license components for the mypaint-brushes package.
+Group: Default
+
+%description license
+license components for the mypaint-brushes package.
+
+
 %prep
 %setup -q -n mypaint-brushes-1.3.0
+cd %{_builddir}/mypaint-brushes-1.3.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1524858817
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604099668
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %reconfigure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1524858817
+export SOURCE_DATE_EPOCH=1604099668
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/mypaint-brushes
+cp %{_builddir}/mypaint-brushes-1.3.0/COPYING %{buildroot}/usr/share/package-licenses/mypaint-brushes/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0
+cp %{_builddir}/mypaint-brushes-1.3.0/Licenses.dep5 %{buildroot}/usr/share/package-licenses/mypaint-brushes/7ca46d1ee6b2cab96dc6f65a076606703c530064
+cp %{_builddir}/mypaint-brushes-1.3.0/Licenses.md %{buildroot}/usr/share/package-licenses/mypaint-brushes/00985afa9105931bde9aa98413456ebc52173be6
 %make_install
 
 %files
@@ -427,3 +449,9 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/lib64/pkgconfig/mypaint-brushes-1.0.pc
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/mypaint-brushes/00985afa9105931bde9aa98413456ebc52173be6
+/usr/share/package-licenses/mypaint-brushes/7ca46d1ee6b2cab96dc6f65a076606703c530064
+/usr/share/package-licenses/mypaint-brushes/82da472f6d00dc5f0a651f33ebb320aa9c7b08d0
